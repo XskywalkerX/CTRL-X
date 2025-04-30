@@ -1,0 +1,19 @@
+# Core libraries
+numpy
+pyyaml               # For config files
+opencv-python        # Computer vision (ball, goal detection, etc.)
+
+# Raspberry Pi GPIO and I2C
+RPi.GPIO             # GPIO access
+smbus2               # I2C communication
+
+# Motor control (for H-bridge, PWM, etc.)
+gpiozero             # High-level motor and sensor API
+pigpio               # For PWM/duty cycle motor control (more precise)
+
+# Development tools (optional)
+loguru               # Advanced logging
+pytest               # Testing
+
+# Optional extras
+matplotlib           # For plotting/debug (useful in vision or tuning)
