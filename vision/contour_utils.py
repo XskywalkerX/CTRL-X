@@ -54,4 +54,4 @@ def check_black_in_quadrant(frame, quadrant):
 
     if percent_black > 50:
         set_intersection(True)
-        print("Intersection detected in quadrant!")
+        print("[!] Intersection detected in quadrant!")
