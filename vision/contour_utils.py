@@ -55,3 +55,51 @@ def check_black_in_quadrant(frame, quadrant):
     if percent_black > 50:
         set_intersection(True)
         print("[!] Intersection detected in quadrant!")
+
+
+def check_black_direction(frame, mask_black, intersection_detected):
+    h, w, _ = frame.shape
+    region_height = 100
+    region_width = 140
+
+    forward_roi = (w//2 - region_width//2, 20, w//2 + region_width//2, 20 + region_height)
+    left_roi = (40, h//2 - region_height//2, 40 + region_width, h//2 + region_height//2)
+    right_roi = (w - 40 - region_width, h//2 - region_height//2, w - 40, h//2 + region_height//2)
+
+    rois = {
+        "forward": forward_roi,
+        "left": left_roi,
+        "right": right_roi
+    }
+
+    for label, (x1, y1, x2, y2) in rois.items():
+        cv2.rectangle(frame, (x1, y1), (x2, y2), (255, 255, 255), 1)
+        cv2.putText(frame, label, (x1, y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (255, 255, 255), 1)
+
+    def is_black(roi_coords):
+        x1, y1, x2, y2 = roi_coords
+        roi = mask_black[y1:y2, x1:x2]
+        black_pixels = cv2.countNonZero(roi)
+        total_pixels = roi.size
+        percent_black = (black_pixels / total_pixels) * 100
+        return percent_black > 30
+
+    if intersection_detected:
+        cv2.putText(frame, "Direction: GO FORWARD (intersection)", (10, 30),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 2)
+        return
+
+    f = is_black(forward_roi)
+    l = is_black(left_roi)
+    r = is_black(right_roi)
+
+    if f or (l and r) or (not f and not l and not r):
+        direction = "GO FORWARD"
+    elif l:
+        direction = "GO LEFT"
+    elif r:
+        direction = "GO RIGHT"
+    else:
+        direction = "GO FORWARD"
+
+    return direction

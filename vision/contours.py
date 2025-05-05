@@ -1,5 +1,5 @@
 import cv2
-from contour_utils import find_center, draw_quadrant, check_black_in_quadrant, is_intersection, set_intersection
+from contour_utils import find_center, draw_quadrant, check_black_in_quadrant, is_intersection, set_intersection, check_black_direction
 
 def process_contours(frame, mask_green, mask_black):
     set_intersection(False)
@@ -42,7 +42,7 @@ def process_contours(frame, mask_green, mask_black):
                 cv2.putText(frame, f"Black: {center}", (center[0] + 10, center[1] + 10),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 2)
 
-    direction = ""
+
     if is_intersection():
         direction = "INTERSECTION: GO FORWARD"
     else:
@@ -53,6 +53,6 @@ def process_contours(frame, mask_green, mask_black):
         elif left_detected:
             direction = "GO LEFT"
         else:
-            direction = "GO FORWARD"
+            direction = check_black_direction(frame, mask_black, is_intersection())
 
     cv2.putText(frame, direction, (30, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 3)
