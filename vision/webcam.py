@@ -18,7 +18,7 @@ def main():
         mask_green, mask_black = get_masks(frame)
         process_contours(frame, mask_green, mask_black)
 
-        cv2.imshow("Contours and Quadrants", frame)
+        cv2.imshow("CTRL X", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
