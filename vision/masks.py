@@ -4,7 +4,6 @@ import numpy as np
 def get_masks(frame):
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
-    # Adjusted green to avoid blue hue match
     lower_green = np.array([40, 70, 70])
     upper_green = np.array([80, 255, 255])
 
